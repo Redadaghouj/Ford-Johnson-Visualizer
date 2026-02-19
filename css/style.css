@@ -1,0 +1,435 @@
+/* === GLOBAL === */
+* {
+    box-sizing: border-box;
+    font-family: 'Consolas', 'Monaco', monospace;
+}
+body {
+    background: #1e1e2f;
+    color: #ddd;
+    padding: 20px;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+.input-area {
+    background: #2a2a3a;
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+.controls {
+    background: #2a2a3a;
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+.btn {
+    background: #5f9ea0;
+    border: none;
+    color: white;
+    padding: 8px 18px;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.2s;
+    font-size: 16px;
+}
+.btn:hover {
+    background: #7acbcd;
+    box-shadow: 0 0 8px #5f9ea0;
+}
+.btn.small {
+    padding: 6px 14px;
+    font-size: 14px;
+}
+.btn.option {
+    background: #3a4a5a;
+    margin-right: 8px;
+    margin-bottom: 8px;
+}
+.btn.option:hover {
+    background: #4f6f8a;
+}
+/* Pulsing glow effect for Jacobsthal button */
+.btn-pulse {
+    animation: pulse 1.5s infinite;
+    box-shadow: 0 0 0 0 rgba(95, 158, 160, 0.7);
+}
+@keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(95, 158, 160, 0.7); }
+    70% { box-shadow: 0 0 0 12px rgba(95, 158, 160, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(95, 158, 160, 0); }
+}
+.slider-container {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    flex: 1;
+}
+input[type=range] {
+    width: 100%;
+    cursor: pointer;
+    background: #444;
+    height: 8px;
+    border-radius: 4px;
+    accent-color: #5f9ea0;
+}
+.stats {
+    background: #3a3a4e;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 15px;
+}
+.main-panel {
+    display: flex;
+    gap: 20px;
+    flex: 1;
+    min-height: 0;
+}
+/* === LEFT PANEL – two independent scrollable blocks with size ratio 3:1 === */
+.left-panel {
+    flex: 1.2;
+    background: #252535;
+    border-radius: 12px;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    overflow: hidden;
+}
+.stack-section {
+    display: flex;
+    flex-direction: column;
+    flex: 3;
+    min-height: 0;
+}
+.stack-section h3 {
+    margin: 0 0 8px 0;
+    flex-shrink: 0;
+}
+.stack-scroll {
+    flex: 1;
+    overflow-y: auto;
+    padding-right: 5px;
+    scrollbar-width: thin;
+    scrollbar-color: #5f9ea0 #2a2a3a;
+}
+.stack-scroll::-webkit-scrollbar {
+    width: 8px;
+}
+.stack-scroll::-webkit-scrollbar-track {
+    background: #2a2a3a;
+    border-radius: 10px;
+}
+.stack-scroll::-webkit-scrollbar-thumb {
+    background: #5f9ea0;
+    border-radius: 10px;
+}
+.stack-scroll::-webkit-scrollbar-thumb:hover {
+    background: #7acbcd;
+}
+.memory-section {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-height: 0;
+}
+.memory-section h3 {
+    margin: 0 0 8px 0;
+    flex-shrink: 0;
+}
+.memory-scroll {
+    flex: 1;
+    overflow-y: auto;
+    padding-right: 5px;
+    scrollbar-width: thin;
+    scrollbar-color: #5f9ea0 #2a2a3a;
+}
+.memory-scroll::-webkit-scrollbar {
+    width: 8px;
+}
+.memory-scroll::-webkit-scrollbar-track {
+    background: #2a2a3a;
+    border-radius: 10px;
+}
+.memory-scroll::-webkit-scrollbar-thumb {
+    background: #5f9ea0;
+    border-radius: 10px;
+}
+.memory-scroll::-webkit-scrollbar-thumb:hover {
+    background: #7acbcd;
+}
+/* === RIGHT PANEL === */
+.right-panel {
+    flex: 1.1;
+    background: #252535;
+    border-radius: 12px;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+.stack-frame {
+    background: #2f2f41;
+    border-left: 5px solid #7b9eb0;
+    margin-bottom: 12px;
+    padding: 12px;
+    border-radius: 6px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.5);
+    cursor: pointer;
+    transition: 0.1s;
+}
+.stack-frame.selected {
+    border-left-color: #ffb86b;
+    background: #3e3e5a;
+}
+.frame-header {
+    display: flex;
+    justify-content: space-between;
+    font-weight: bold;
+    color: #ffb86b;
+    margin-bottom: 8px;
+}
+.var-list {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 6px 15px;
+    font-size: 13px;
+    color: #ccc;
+}
+.var-name {
+    color: #9cdcfe;
+}
+.var-value {
+    color: #ce9178;
+    word-break: break-word;
+}
+.memory-layout {
+    background: #0e0e16;
+    border-radius: 8px;
+    padding: 15px;
+    font-size: 13px;
+    display: flex;
+    gap: 25px;
+    flex-wrap: wrap;
+}
+.stack-mem {
+    flex: 1;
+}
+.heap-mem {
+    flex: 1;
+}
+.mem-box {
+    background: #1a1a26;
+    padding: 8px;
+    border-radius: 5px;
+    margin-top: 6px;
+    border: 1px solid #444;
+}
+.array-viz {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin-top: 8px;
+    align-items: center;
+}
+.array-cell {
+    background: #2d2d3a;
+    padding: 8px 12px;
+    border-radius: 5px;
+    font-weight: 600;
+    color: #f1fa8c;
+    border: 1px solid #6272a4;
+    min-width: 45px;
+    text-align: center;
+}
+.array-index {
+    font-size: 11px;
+    color: #888;
+    margin-top: 2px;
+}
+h3 {
+    color: #dfeaff;
+    margin-top: 0;
+    margin-bottom: 12px;
+    border-bottom: 1px solid #4a4a66;
+    padding-bottom: 5px;
+}
+#numberInput {
+    background: #1e1e2a;
+    border: 1px solid #5f9ea0;
+    color: #ddd;
+    padding: 8px 15px;
+    border-radius: 20px;
+    width: 300px;
+    font-size: 15px;
+}
+#randomCount {
+    background: #1e1e2a;
+    border: 1px solid #5f9ea0;
+    color: #ddd;
+    padding: 8px 12px;
+    border-radius: 20px;
+    width: 80px;
+    font-size: 15px;
+    text-align: center;
+}
+footer {
+    margin-top: 10px;
+    text-align: right;
+    color: #7f8c8d;
+    font-size: 12px;
+}
+.key-hint {
+    color: #aaa;
+    font-size: 13px;
+    margin-left: 10px;
+}
+/* === COMMENT BOX with custom scrollbar === */
+.comment-box {
+    background: #1e1e2a;
+    border-left: 6px solid #5f9ea0;
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 15px;
+    color: #f0f0f0;
+    font-size: 14px;
+    line-height: 1.5;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.6);
+    overflow-y: auto;
+    max-height: 220px;
+    scrollbar-width: thin;
+    scrollbar-color: #5f9ea0 #2a2a3a;
+}
+.comment-box::-webkit-scrollbar {
+    width: 8px;
+}
+.comment-box::-webkit-scrollbar-track {
+    background: #2a2a3a;
+    border-radius: 10px;
+}
+.comment-box::-webkit-scrollbar-thumb {
+    background: #5f9ea0;
+    border-radius: 10px;
+}
+.comment-box::-webkit-scrollbar-thumb:hover {
+    background: #7acbcd;
+}
+.comment-icon {
+    color: #ffb86b;
+    font-weight: bold;
+    margin-right: 8px;
+}
+.jacobsthal-detail {
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px dashed #5f9ea0;
+    color: #b0e0e6;
+    font-size: 13px;
+}
+/* === MODAL OVERLAY (common) === */
+.modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+.modal-content {
+    background: #252535;
+    border-left: 8px solid #5f9ea0;
+    border-radius: 12px;
+    padding: 25px;
+    width: 800px;
+    max-width: 95%;
+    max-height: 85vh;
+    overflow-y: auto;
+    color: #ddd;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+    position: relative;
+    scrollbar-width: thin;
+    scrollbar-color: #5f9ea0 #2a2a3a;
+}
+.modal-content::-webkit-scrollbar {
+    width: 8px;
+}
+.modal-content::-webkit-scrollbar-track {
+    background: #2a2a3a;
+    border-radius: 10px;
+}
+.modal-content::-webkit-scrollbar-thumb {
+    background: #5f9ea0;
+    border-radius: 10px;
+}
+.modal-content::-webkit-scrollbar-thumb:hover {
+    background: #7acbcd;
+}
+.modal-close {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    font-size: 24px;
+    cursor: pointer;
+    color: #aaa;
+    transition: 0.2s;
+}
+.modal-close:hover {
+    color: #ffb86b;
+}
+.modal-title {
+    color: #ffb86b;
+    font-size: 20px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #5f9ea0;
+    padding-bottom: 10px;
+}
+.modal-step {
+    background: #1e1e2a;
+    padding: 12px;
+    border-radius: 6px;
+    margin-bottom: 15px;
+    border-left: 4px solid #5f9ea0;
+}
+.modal-highlight {
+    color: #f1fa8c;
+    font-weight: bold;
+}
+/* Mermaid diagram styling */
+.mermaid-wrapper {
+    background: #1e1e2a;
+    padding: 20px;
+    border-radius: 12px;
+    margin-top: 15px;
+    border: 1px solid #5f9ea0;
+    overflow-x: auto;
+}
+.mermaid {
+    background: transparent;
+}
+.flowchart-desc {
+    margin-top: 12px;
+    color: #b0e0e6;
+    font-style: italic;
+    border-top: 1px dashed #5f9ea0;
+    padding-top: 10px;
+}
+.option-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 15px;
+}
