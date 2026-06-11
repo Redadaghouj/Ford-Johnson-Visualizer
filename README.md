@@ -8,9 +8,6 @@ The project helps understand how the algorithm minimizes comparisons by showing:
 - Jacobsthal insertion sequence
 - comparison flow and data states in real time
 
-🌐 **Live Demo:**  
-https://redadaghouj.github.io/Ford-Johnson-Visualizer/
-
 ## Purpose
 
 This visualizer was built to deeply explore one of the most comparison-efficient sorting algorithms and make its complex logic intuitive through visualization.
